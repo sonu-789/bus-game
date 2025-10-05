@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>manishticket</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Roboto', sans-serif; }
+
+    body {
+      background-color: #f57c00;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: start;
+      min-height: 100vh;
+      padding: 20px;
+      transition: background-color 0.3s ease;
+    }
+
+    .form-card {
+      background-color: #fff;
+      border-radius: 8px;
+      padding: 20px;
+      width: 100%;
+      max-width: 420px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .form-card h2 { text-align: center; font-size: 20px; font-weight: 700; }
+    label { font-size: 15px; font-weight: 500; }
+    input { padding: 10px; border: 1px solid #ccc; border-radius: 6px; font-size: 15px; width: 100%; }
+
+    button {
+      background-color: #2e7d32;
+      color: white;
+      border: none;
+      padding: 10px;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+    button:hover { background-color: #1b5e20; }
+
+    /* Theme option styles */
+    .theme-options {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 8px 0 12px 0;
+    }
+    .theme-options label {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      cursor: pointer;
+      font-weight: 500;
+    }
+
+    /* Ticket UI (unchanged) */
+    .ticket-card {
+      background-color: #fff;
+      border-radius: 8px;
+      padding: 20px 16px;
+      width: 100%;
+      max-width: 420px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+      display: none;
+    }
+    .ticket-ro{ margin:5px 0px 10px 0px; }
+    .back-btn {
+      position: absolute;
+      top: 93%;
+      left: 12px;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+    }
+    .back-btn svg { width: 18px; height: 18px; fill: #333; }
+    .ticket-header { text-align: center; font-size: 20px; color: black; margin-bottom: 16px; }
+    .ticket-row { display: flex; justify-content: space-between; font-size: 16px; margin: 8px 0; font-weight: 400; }
+    .divider { border-top: 1px solid #ccc; margin: 16px 0; }
+    .qr-button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      background-color: #e8f5e9;
+      color: #2e7d32;
+      border: 2.2px solid #2e7d32;
+      padding: 12px;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 400;
+      width: 100%;
+      margin-top: 10px;
+      cursor: pointer;
+    }
+    .qr-button:hover { background-color: #c8e6c9; }
+    .footer-logo { text-align: center; }
+    .footer-logo img { width: 270px; opacity: 0.9; }
+    .fare-highlight { font-size: 18px; font-weight: 300; }
+    .head-temp { display: flex; width: 100%; justify-content: space-between; align-items: center; }
+    .t-items { display: flex; justify-content: end; align-items: end; padding-right: 3px; }
+    .end-data { font-size: 18px !important; }
+    .random-data { display: flex; justify-content: center; align-items: center; }
+    .qrhai { width: 22px; height: 22px; }
+  </style>
+</head>
+<body>
+
+  <div class="form-card" id="formCard">
+    <h2>Generate Bus Ticket</h2>
+
+    <label>Bus Number</label>
+    <input list="busNumbers" type="text" id="busNumber" placeholder="Enter Bus Number">
+    <datalist id="busNumbers">
+      <option value="DL1PD4141">
+      <option value="DL1PD5361">
+      <option value="DL1PD2378">
+      <option value="DL1PD8765">
+      <option value="DL1PD9900">
+    </datalist>
+
+    <label>Bus Route</label>
+    <input list="busRoutes" type="text" id="busRoute" placeholder="Enter Bus Route">
+    <datalist id="busRoutes">
+      <option value="729">
+      <option value="717">
+      <option value="543">
+      <option value="543A">
+      <option value="801STL">
+    </datalist>
+
+    <label>Fare Amount (₹)</label>
+    <input list="fares" type="number" id="fare" placeholder="Enter Fare">
+    <datalist id="fares">
+      <option value="5">
+      <option value="10">
+      <option value="15">
+      <option value="20">
+      <option value="25">
+    </datalist>
+
+    <label>Starting Stop</label>
+    <input list="startStops" type="text" id="startStopInput" placeholder="Enter Starting Stop">
+    <datalist id="startStops">
+      <option value="Mahipal Pur Crossing NH-8">
+      <option value="Samalkha Village">
+      <option value="Samalkha Crossing">
+      <option value="Royal Resisdency (Dwarka)">
+      <option value="Rang puri (NH-8 Circle)">
+      <option value="Shiv Murti">
+      <option value="Shankar Vihar NH-8">
+      <option value="Kappasera Border">
+    </datalist>
+
+    <label>Ending Stop</label>
+    <input list="endStops" type="text" id="endStopInput" placeholder="Enter Ending Stop">
+    <datalist id="endStops">
+      <option value="Mahipal Pur Crossing NH-8">
+      <option value="Samalkha Village">
+      <option value="Samalkha Crossing">
+      <option value="Royal Resisdency (Dwarka)">
+      <option value="Rang puri (NH-8 Circle)">
+      <option value="Shiv Murti">
+      <option value="Shankar Vihar NH-8">
+      <option value="Kappasera Border">
+    </datalist>
+
+    <label>Booking Date</label>
+    <input type="date" id="bookingDate">
+
+    <label>Booking Time</label>
+    <input type="time" id="bookingTimeInput">
+
+    <!-- Theme selector -->
+    <label>Select Theme Color</label>
+    <div class="theme-options">
+      <label><input type="radio" name="theme" value="#2196f3" onclick="changeTheme(this.value)"> Blue</label>
+      <label><input type="radio" name="theme" value="#f57c00" onclick="changeTheme(this.value)" checked> Orange</label>
+      <label><input type="radio" name="theme" value="#ffffff" onclick="changeTheme(this.value)"> White</label>
+    </div>
+
+    <button onclick="generateTicket()">Generate Ticket</button>
+  </div>
+
+  <div class="ticket-card" id="ticketCard">
+    <div class="back-btn" onclick="goBackToForm()">
+      <svg viewBox="0 0 24 24">
+        <path d="M15 18l-6-6 6-6"></path>
+      </svg>
+    </div>
+
+    <div class="ticket-header">Transport Dept. of Delhi</div>
+
+    <div class="ticket-row">
+      <div id="busNumberDisplay">DL1PD5361</div>
+      <div class="fare-highlight" id="discountedFare">₹ 9.24</div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="head-temp">
+      <div>
+        <div>Bus Route</div>
+        <div class="ticket-ro" id="busRouteDisplay">729</div>
+      </div>
+      <div>
+        <div>Fare</div>
+        <div class="ticket-ro rupes" id="originalFare">₹ 10.00</div>
+      </div>
+    </div>
+
+    <div class="head-temp">
+      <div>
+        <div class="ticket-row"><span>Booking Time</span></div>
+        <div class="ticket-row" id="bookingTimeDisplay">04 Oct, 25 | 06:50 PM</div>
+      </div>
+      <div>
+        <div class="ticket-row"><span>Tickets</span></div>
+        <div class="ticket-row t-items"><span id="ticketCount">1</span></div>
+      </div>
+    </div>
+
+    <div class="ticket-row" style="margin-top: 16px;">
+      <span>Starting stop</span>
+    </div>
+    <div class="ticket-row">
+      <span class="end-data" id="startStop">Mahipal Pur Crossing NH-8</span>
+    </div>
+    <div class="ticket-row" style="margin-top: 16px;">
+      <span>Ending stop</span>
+    </div>
+    <div class="ticket-row">
+      <span class="end-data" id="endStop">Samalkha Village</span>
+    </div>
+
+    <div class="ticket-row random-data" style="margin-top: 16px; font-size: 14px;">
+      <span id="ticketId">Tdc22106202025d216cc</span>
+    </div>
+
+    <button class="qr-button" onclick="showQR()">
+      <img class="qrhai" src="qrhai.png" alt="QR"> Show QR code
+    </button>
+
+    <div class="footer-logo">
+      <img src="./foot.jpeg" alt="ONDC Network Logo">
+    </div>
+  </div>
+
+  <script>
+    function calculateDiscountedFare(fare) {
+      const rate = 0.075;
+      return parseFloat((fare * (1 - rate)).toFixed(2));
+    }
+
+    function generateTicket() {
+      const busNumber = document.getElementById('busNumber').value.trim().toUpperCase() || 'DL1PD5361';
+      const busRoute = document.getElementById('busRoute').value.trim() || '729';
+      const fareValue = parseFloat(document.getElementById('fare').value);
+      const fare = isNaN(fareValue) ? 10 : fareValue;
+      const bookingDate = document.getElementById('bookingDate').value || getTodayDate();
+      const bookingTimeInput = document.getElementById('bookingTimeInput').value || '18:50';
+      const startStop = document.getElementById('startStopInput').value || 'Mahipal Pur Crossing NH-8';
+      const endStop = document.getElementById('endStopInput').value || 'Samalkha Village';
+
+      const discountedFare = calculateDiscountedFare(fare);
+
+      const [year, month, day] = bookingDate.split('-');
+      let [hourStr, minuteStr] = bookingTimeInput.split(':');
+      let hour = parseInt(hourStr, 10);
+      const minute = minuteStr.padStart(2, '0');
+      let ampm = 'AM';
+      if (hour >= 12) { ampm = 'PM'; if (hour > 12) hour -= 12; } 
+      else if(hour === 0) hour = 12;
+      const hourDisplay = hour.toString().padStart(2, '0');
+      const monthNames = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+      const dispMonth = monthNames[parseInt(month, 10) - 1];
+      const dispYear = year.slice(2);
+      const bookingTimeFormatted = `${day.padStart(2,'0')} ${dispMonth}, ${dispYear} | ${hourDisplay}:${minute} ${ampm}`;
+
+      const ticketId = 'T' + Date.now().toString(16) + Math.floor(Math.random() * 1e8).toString(16);
+
+      document.getElementById('busNumberDisplay').textContent = busNumber;
+      document.getElementById('busRouteDisplay').textContent = busRoute;
+      document.getElementById('originalFare').textContent = '₹ ' + fare.toFixed(2);
+      document.getElementById('discountedFare').textContent = '₹ ' + discountedFare;
+      document.getElementById('bookingTimeDisplay').textContent = bookingTimeFormatted;
+      document.getElementById('ticketCount').textContent = '1';
+      document.getElementById('ticketId').textContent = ticketId;
+      document.getElementById('startStop').textContent = startStop;
+      document.getElementById('endStop').textContent = endStop;
+
+      document.getElementById('formCard').style.display = 'none';
+      document.getElementById('ticketCard').style.display = 'block';
+    }
+
+    function goBackToForm() {
+      document.getElementById('ticketCard').style.display = 'none';
+      document.getElementById('formCard').style.display = 'flex';
+    }
+
+    function showQR() { alert('QR would show here'); }
+
+    function getTodayDate() {
+      const d = new Date();
+      const mm = String(d.getMonth() + 1).padStart(2, '0');
+      const dd = String(d.getDate()).padStart(2, '0');
+      const yyyy = d.getFullYear();
+      return `${yyyy}-${mm}-${dd}`;
+    }
+
+    function changeTheme(color) {
+      document.body.style.backgroundColor = color;
+    }
+  </script>
+
+</body>
+</html>
